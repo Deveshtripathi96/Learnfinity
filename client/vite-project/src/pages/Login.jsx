@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,23 +6,46 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs"
+} from "@/components/ui/tabs";
+import { useState } from "react";
 
 const Login = () => {
+  const [SignupInput, setSignupInput] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const [LoginInput, setLoginInput] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handler = (e, type) => {
+    const { name, value } = e.target;
+    if (type === "signup") {
+      setSignupInput((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setLoginInput((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
   return (
     <Tabs defaultValue="signup" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="signup">Sign Up</TabsTrigger>
         <TabsTrigger value="login">Login</TabsTrigger>
       </TabsList>
+
+      {/* Signup Form */}
       <TabsContent value="signup">
         <Card>
           <CardHeader>
@@ -32,15 +55,35 @@ const Login = () => {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Enter your name" />
+              <Input
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                value={SignupInput.name}
+                onChange={(e) => handler(e, "signup")}
+              />
             </div>
             <div className="space-y-1">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" placeholder="Enter your email" />
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                value={SignupInput.email}
+                onChange={(e) => handler(e, "signup")}
+              />
             </div>
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" placeholder="Enter your password" />
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                value={SignupInput.password}
+                onChange={(e) => handler(e, "signup")}
+              />
             </div>
           </CardContent>
           <CardFooter>
@@ -48,6 +91,8 @@ const Login = () => {
           </CardFooter>
         </Card>
       </TabsContent>
+
+      {/* Login Form */}
       <TabsContent value="login">
         <Card>
           <CardHeader>
@@ -56,12 +101,26 @@ const Login = () => {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
-              <Label htmlFor="username">Username</Label>
-              <Input id="username" placeholder="Enter your username" />
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                value={LoginInput.email}
+                onChange={(e) => handler(e, "login")}
+              />
             </div>
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="Enter your password" />
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                value={LoginInput.password}
+                onChange={(e) => handler(e, "login")}
+              />
             </div>
           </CardContent>
           <CardFooter>
@@ -70,7 +129,7 @@ const Login = () => {
         </Card>
       </TabsContent>
     </Tabs>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
