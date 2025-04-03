@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -37,6 +38,13 @@ const Login = () => {
       setLoginInput((prev) => ({ ...prev, [name]: value }));
     }
   };
+
+  const testhandle=(type)=>{
+    const inputdata=(type==="signup")?SignupInput:LoginInput;
+   
+   
+    console.log(inputdata);
+  }
 
   return (
     <Tabs defaultValue="signup" className="w-[400px]">
@@ -87,7 +95,7 @@ const Login = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button>Sign Up</Button>
+            <Button onClick={()=>{testhandle("signup")}}>Sign Up</Button>
           </CardFooter>
         </Card>
       </TabsContent>
@@ -124,7 +132,7 @@ const Login = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button>Login</Button>
+            <Button onClick={()=>{testhandle("login")}}>Login</Button>
           </CardFooter>
         </Card>
       </TabsContent>
