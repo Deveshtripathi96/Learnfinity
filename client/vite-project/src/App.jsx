@@ -1,7 +1,8 @@
  //bABpIHRStrTNrp2W
  
  import { Button } from "@/components/ui/button"
-import Login from "./pages/Login"
+import Login from "./pages/Login";
+import Navbar from "./components/ui/navbar";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <main>
       
       <Login/>
+      <Navbar/>
       </main>
       
     </div>
