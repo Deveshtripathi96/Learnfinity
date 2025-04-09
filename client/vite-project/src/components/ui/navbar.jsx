@@ -1,8 +1,6 @@
-
-import { Menu, School2} from 'lucide-react'
+import { Menu, School2 } from 'lucide-react'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -10,12 +8,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ModeToggle } from '@/Darkmode'
@@ -23,129 +16,106 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Label } from '@radix-ui/react-label'
-import { Input } from './input'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 
-
-
 const Navbar = () => {
-  const user=true;
-  
-  return (
-    <div className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 right-0 left-0 duration-300 z-10 '>
-        {/* Desktop */}
-        <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center gap-10 h-full">
-            <div className='flex items-center gap-2'>
-            <School2 size={"30"}/>
-        <h1 className='hidden md:block font-extrabold text-2xl'>E-learning </h1>
-            </div>
-            <div>
+  const user = true
 
-            </div>
-            <div className='flex item-center gap-7'>
-            {
-  user?(
-    <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-    <Avatar>
-  <AvatarImage src="https://github.com/shadcn.png" />
-  <AvatarFallback>CN</AvatarFallback>
-</Avatar>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent className="w-56">
-      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-      <DropdownMenuSeparator />
-      <DropdownMenuGroup>
-        <DropdownMenuItem>
-           My learning
-         
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          Edit profile
-         
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          Log out
-         
-        </DropdownMenuItem>
-       
-        
-      </DropdownMenuGroup>
-      <DropdownMenuSeparator />
-      <DropdownMenuGroup>
-        
-      
-       
-      </DropdownMenuGroup>
-      
-      <DropdownMenuItem>
-        Dashboard
-     
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-  ):(
-    <div className='flex items-center gap-2'>
-      <Button variant="outline">Login</Button>
-      <Button>Signup</Button>
-    </div>
-  )
-       }
-       <ModeToggle/>
-            </div>
-      
+  return (
+    <div className="h-16 fixed top-0 left-0 right-0 z-20 backdrop-blur-md bg-green-900/60 dark:bg-emerald-950/60 border-b border-green-800 shadow-sm transition-all duration-300">
+      {/* Desktop */}
+      <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center px-6 h-full">
+        <div className="flex items-center gap-2">
+          <School2 size={26} className="text-white drop-shadow-md" />
+          <h1 className="font-extrabold text-2xl text-white drop-shadow-md tracking-wide">
+            E-learning
+          </h1>
         </div>
-        {/*Mobile*/}
-        <div className='flex md:hidden item-center justify-between px-4 h-full'>
-        <h1 className='font-extrabold text-2xl'>E-learning</h1>
-        <MobileNavbar/>
-       
+
+        <div className="flex items-center gap-5">
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 bg-white dark:bg-[#1a1a1a] text-sm">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>My learning</DropdownMenuItem>
+                  <DropdownMenuItem>Edit profile</DropdownMenuItem>
+                  <DropdownMenuItem>Log out</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Dashboard</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button variant="outline" className="text-white border-white">Login</Button>
+              <Button className="bg-white text-green-800 hover:bg-gray-100">Signup</Button>
+            </div>
+          )}
+          <ModeToggle />
         </div>
-        
-        
+      </div>
+
+      {/* Mobile */}
+      <div className="flex md:hidden items-center justify-between px-4 h-full">
+        <h1 className="font-extrabold text-2xl text-white drop-shadow-md tracking-wide">
+          E-learning
+        </h1>
+        <MobileNavbar />
+      </div>
     </div>
   )
 }
 
-export default Navbar;
+export default Navbar
 
-const MobileNavbar=()=>{
-  const role ='instructor';
+const MobileNavbar = () => {
+  const role = 'instructor'
+
   return (
     <Sheet>
-  <SheetTrigger asChild>
-    <Button  size ='icon' className="rounded-full bg-gray-200 hover:bg-gray-200 " variant="outline">
-      <Menu/>
-    </Button>
-  </SheetTrigger>
-  <SheetContent className='flex flex-col'>
-    <SheetHeader className='flex flexrow items-center justify-between mt-2'>
-      <SheetTitle>E-learning</SheetTitle>
-     <ModeToggle/>
-    </SheetHeader>
-    <Separator className='mr-2'/>
-    <nav className='flex flex-col space-y-4'>
-      <span>My learning</span>
-      <span>Edit profile</span>
-      <span>Log out</span>
-    </nav>
-    {role==='instructor' &&(
-       <SheetFooter>
-       <SheetClose asChild>
-         <Button type="submit">Dashboard</Button>
-       </SheetClose>
-     </SheetFooter>
-    )}
-    
-  </SheetContent>
-</Sheet>
+      <SheetTrigger asChild>
+        <Button
+          size="icon"
+          className="rounded-full bg-white/20 text-white hover:bg-white/30 backdrop-blur"
+          variant="outline"
+        >
+          <Menu />
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="flex flex-col dark:bg-[#0c0c0c]">
+        <SheetHeader className="flex flex-row items-center justify-between mt-2">
+          <SheetTitle className="text-lg font-bold text-white">E-learning</SheetTitle>
+          <ModeToggle />
+        </SheetHeader>
+        <Separator className="my-4" />
+        <nav className="flex flex-col space-y-4 text-base font-medium text-white">
+          <span>My learning</span>
+          <span>Edit profile</span>
+          <span>Log out</span>
+        </nav>
+        {role === 'instructor' && (
+          <SheetFooter className="mt-auto pt-4">
+            <SheetClose asChild>
+              <Button type="submit" className="w-full bg-white text-green-800 hover:bg-gray-100">
+                Dashboard
+              </Button>
+            </SheetClose>
+          </SheetFooter>
+        )}
+      </SheetContent>
+    </Sheet>
   )
-  
 }
