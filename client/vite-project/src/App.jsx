@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button"
-import Login from "./pages/student/Login"
+import { Button } from "@/components/ui/button";
+import Login from "./pages/student/Login";
+import Navbar from "./components/ui/navbar";
+import Herosection from "./pages/student/Herosection";
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Sidebar from "./pages/admin/lecture/Sidebar"
 import Dashboard from "./pages/admin/lecture/Dashboard"
@@ -47,4 +49,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
