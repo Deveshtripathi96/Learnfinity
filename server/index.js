@@ -8,7 +8,8 @@ import UserRoute from "./routes/user.routes.js"
 dotenv.config({});
 //database called
 connectDB();
-  
+
+const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
