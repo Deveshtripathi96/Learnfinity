@@ -15,12 +15,46 @@ import {
 } from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import { Loader2 } from 'lucide-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Course from './Course';
+import { useLoadUserQuery, useUpdateUserMutation } from '@/features/api/authApi';
+import { toast } from 'sonner';
 
 const Profile = () => {
-  const isloading = false;
+const [name,setName]=useState("");
+const [profilePhoto,setProfilePhoto]=useState("");
+
+const onChangeHandler=(e)=>{
+  const file=e.target.files?.[0];
+  if(file) setProfilePhoto(file);
+}
+
+
+  const {data,isLoading,refetch}=useLoadUserQuery();
+  const [updateUser,{data:updateUserdata,isLoading:updateUserIsLoading,error,isError,isSuccess:updateUserSuccess}]=useUpdateUserMutation();
+  console.log(data);
+  
+  const {user}=data || {};
+  const updateUserHandler= async ()=>{
+   const formData= new FormData();
+   formData.append("name",name);
+   formData.append("profilePhoto",profilePhoto);
+
+   await updateUser(formData);
+  };
+  useEffect(() => {
+    if (updateUserSuccess) {
+      toast.success(updateUserdata?.message || "Profile Updated");
+      refetch();
+    }
+    if (isError) {
+      toast.error(error?.data?.message || error?.message || "Failed to Update");
+    }
+  }, [error, updateUserdata, updateUserSuccess, isError]);
+  
+  
  const enrolledCourses=[1,2];
+ 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
       <h1 className="text-3xl font-bold text-center md:text-left mb-8">
@@ -30,7 +64,7 @@ const Profile = () => {
         <div className="flex flex-col items-center">
           <Avatar className="h-28 w-28 md:h-36 md:w-36 border-2 border-gray-300 dark:border-gray-700 shadow-md">
             <AvatarImage
-              src={'https://github.com/shadcn.png'}
+              src={ user?.photoUrl ||'https://github.com/shadcn.png'}
               alt="@shadcn"
               className="rounded-full"
             />
@@ -44,7 +78,7 @@ const Profile = () => {
             <p className="font-semibold text-gray-900 dark:text-gray-100">
               Name:
               <span className="ml-2 font-normal text-gray-700 dark:text-gray-300">
-                Devesh Tripathi
+                {user?.name}
               </span>
             </p>
           </div>
@@ -52,7 +86,7 @@ const Profile = () => {
             <p className="font-semibold text-gray-900 dark:text-gray-100">
               Email:
               <span className="ml-2 font-normal text-gray-700 dark:text-gray-300">
-                deva@gmail.com
+                {user?.email}
               </span>
             </p>
           </div>
@@ -60,7 +94,7 @@ const Profile = () => {
             <p className="font-semibold text-gray-900 dark:text-gray-100">
               Role:
               <span className="ml-2 font-normal text-gray-700 dark:text-gray-300">
-                Student
+                {user?.role.toUpperCase()}
               </span>
             </p>
           </div>
@@ -89,6 +123,13 @@ const Profile = () => {
                   <Input
                     id="name"
                     type="text"
+                    value={name}
+                    onChange={
+                      (e)=>{
+                        setName(e.target.value)
+                      }
+                    }
+                   
                     placeholder="Name"
                     className="h-9 px-3 text-sm bg-white"
                   />
@@ -100,6 +141,7 @@ const Profile = () => {
                   </Label>
                   <Input
                     id="photo"
+                    onChange={onChangeHandler}
                     type="file"
                     accept="image/*"
                     className=" bg-white h-9 px-2 text-sm file:mr-2 file:py-1 file:px-3 file:border file:rounded-md file:text-sm"
@@ -108,8 +150,8 @@ const Profile = () => {
               </div>
 
               <DialogFooter className="mt-7">
-                <Button disabled={isloading} className="w-full sm:w-auto">
-                  {isloading ? (
+                <Button disabled={isLoading} onClick={updateUserHandler} className="w-full sm:w-auto">
+                  {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Please wait

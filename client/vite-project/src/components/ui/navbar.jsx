@@ -25,7 +25,7 @@ import { Separator } from '@radix-ui/react-dropdown-menu'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
-  const user = true
+  const user = true;
 
   return (
     <header className="h-16 fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-gradient-to-r from-white to-white dark:from-emerald-950 dark:to-green-950 border-b border-black shadow-md transition-all duration-300">
