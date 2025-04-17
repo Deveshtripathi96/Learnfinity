@@ -8,30 +8,30 @@ export const courseApi = createApi({
     baseUrl: COURSE_API,
     credentials: "include",
   }),
-  tagTypes:['Refetch_creator_course'],
+  tagTypes: ["Refetch_creator_course"],
   endpoints: (builder) => ({
     createCourse: builder.mutation({
       query: ({ Title, category }) => ({
         url: "",
         method: "POST",
-        body: {Title, category },
+        body: { Title, category },
       }),
-      invalidatesTags: ['Refetch_creator_course'],
+      invalidatesTags: ["Refetch_creator_course"],
     }),
     getCreatorCourse: builder.query({
       query: () => ({
         url: "",
         method: "GET",
       }),
-      providesTags: ['Refetch_creator_course'],
+      providesTags: ["Refetch_creator_course"],
     }),
     editCourse: builder.mutation({
-      query: ({formdata,courseId}) => ({
+      query: ({ formdata, courseId }) => ({
         url: `/${courseId}`,
         method: "PUT",
         body: formdata,
       }),
-      invalidatesTags: ['Refetch_creator_course'],
+      invalidatesTags: ["Refetch_creator_course"],
     }),
     getCourseById: builder.query({
       query: (courseId) => ({
@@ -39,7 +39,27 @@ export const courseApi = createApi({
         method: "GET",
       }),
     }),
+    createLecture: builder.mutation({
+      query: ({ lectureTitle, courseId }) => ({
+        url: `/${courseId}/lecture`,
+        method: "POST",
+        body: { lectureTitle },
+      }),
+    }),
+    getCourseLecture: builder.query({
+      query: (courseId) => ({
+        url: `/${courseId}/lecture`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const{useCreateCourseMutation,useGetCreatorCourseQuery,useEditCourseMutation,useGetCourseByIdQuery} = courseApi
+export const {
+  useCreateCourseMutation,
+  useGetCreatorCourseQuery,
+  useEditCourseMutation,
+  useGetCourseByIdQuery,
+  useCreateLectureMutation,
+  useGetCourseLectureQuery
+} = courseApi;
