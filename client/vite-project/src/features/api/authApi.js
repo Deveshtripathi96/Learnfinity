@@ -1,5 +1,7 @@
 import {createApi,fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import { userLoggedIn } from "../authSlice";
+import { Form } from "react-router-dom";
+
 
 const USER_API="http://localhost:8080/api/v1/user/"
 
@@ -37,6 +39,21 @@ export const authApi=createApi({
 
            
         }),
+        loadUser:builder.query({
+            query:()=>({
+                url:"profile",
+                method:"GET",
+            }),
+
+        }),
+        updateUser:builder.mutation({
+            query:(formData)=>({
+            url:"profile/update",
+            method:"PUT",
+            body:formData,
+            credentials:"include"
+            })
+        }),
        
          
         
@@ -46,4 +63,4 @@ export const authApi=createApi({
     
 })
 
-export const {useRegisterUserMutation,useLoginUserMutation}=authApi;
+export const {useRegisterUserMutation,useLoginUserMutation,useLoadUserQuery,useUpdateUserMutation}=authApi;

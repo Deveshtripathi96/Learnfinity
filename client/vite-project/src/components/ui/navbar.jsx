@@ -22,22 +22,23 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Separator } from '@radix-ui/react-dropdown-menu'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
-  const user = true
+  const user = true;
 
   return (
-    <div className="h-16 fixed top-0 left-0 right-0 z-20 backdrop-blur-md bg-green-900/60 dark:bg-emerald-950/60 border-b border-green-800 shadow-sm transition-all duration-300">
+    <header className="h-16 fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-gradient-to-r from-white to-white dark:from-emerald-950 dark:to-green-950 border-b border-black shadow-md transition-all duration-300">
       {/* Desktop */}
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center px-6 h-full">
-        <div className="flex items-center gap-2">
-          <School2 size={26} className="text-white drop-shadow-md" />
-          <h1 className="font-extrabold text-2xl text-white drop-shadow-md tracking-wide">
+        <div className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition">
+          <School2 size={26} className="text-black drop-shadow-md" />
+          <h1 className="font-extrabold text-2xl text-black drop-shadow-md tracking-wide">
             E-learning
           </h1>
         </div>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 border-black">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -46,12 +47,12 @@ const Navbar = () => {
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-white dark:bg-[#1a1a1a] text-sm">
+              <DropdownMenuContent className="w-56 bg-gray-100 dark:bg-[#1a1a1a] text-sm">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>My learning</DropdownMenuItem>
-                  <DropdownMenuItem>Edit profile</DropdownMenuItem>
+                  <DropdownMenuItem> <Link to="my-learning">My learning</Link></DropdownMenuItem>
+                  <DropdownMenuItem> <Link to="profile">Edit profile</Link></DropdownMenuItem>
                   <DropdownMenuItem>Log out</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
@@ -60,8 +61,12 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Button variant="outline" className="text-white border-white">Login</Button>
-              <Button className="bg-white text-green-800 hover:bg-gray-100">Signup</Button>
+              <Button variant="outline" className="text-white border-white hover:bg-white/10">
+                Login
+              </Button>
+              <Button className="bg-white text-green-800 hover:bg-gray-100">
+                Signup
+              </Button>
             </div>
           )}
           <ModeToggle />
@@ -70,12 +75,13 @@ const Navbar = () => {
 
       {/* Mobile */}
       <div className="flex md:hidden items-center justify-between px-4 h-full">
-        <h1 className="font-extrabold text-2xl text-white drop-shadow-md tracking-wide">
-          E-learning
-        </h1>
+        <div className="flex items-center gap-2">
+          <School2 size={24} className="text-white" />
+          <h1 className="font-bold text-xl text-white">E-learning</h1>
+        </div>
         <MobileNavbar />
       </div>
-    </div>
+    </header>
   )
 }
 
