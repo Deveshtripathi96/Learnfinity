@@ -165,6 +165,20 @@ export const createLecture = async(req,res)=>{
             lectures: course.lectures
         })
       } catch (error) {
-        
+         console.log(error)
+         return res.status(500).json({
+            message: "Failed to get course lecture"
+         })
       }
+}
+
+export const editLecture = async(req,res) => {
+    try {
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+           message: "Failed to edit Lecture"
+        })
+    }
 }
