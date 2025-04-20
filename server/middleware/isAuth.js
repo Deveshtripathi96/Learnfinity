@@ -4,7 +4,7 @@ const isAuthenticated = async(req,res,next)=>{
     try {
         //console.log("req aaai")
         const token = await req.cookies.token;
-        //console.log(token)
+        // console.log(token)
         if(!token){
             return res.status(401).json({
                 message:"Unathorised",

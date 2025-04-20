@@ -44,38 +44,39 @@ const appRouter = createBrowserRouter([
         path: "profile",
         element: <Profile/>,
       },
+      
+      {
+        path:"/admin",
+        element: <Sidebar/>,
+        children:[
+          {
+            path:"dashboard",
+            element: <Dashboard/>
+          },
+          {
+            path:"course",
+            element: <CourseTable/>
+          },
+          {
+            path:"course/create",
+            element:<AddCourse/>
+          },
+          {
+            path:"course/:courseId",
+            element:<EditCourse/>
+          },
+          {
+            path:"course/:courseId/lecture",
+            element:<CreateLecture/>
+          },
+          {
+            path:"course/:courseId/lecture/:lectureId",
+            element:<EditLecture/>
+          }
+        ]
+      }
     ],
   },
-  {
-    path:"/admin",
-    element: <Sidebar/>,
-    children:[
-      {
-        path:"dashboard",
-        element: <Dashboard/>
-      },
-      {
-        path:"course",
-        element: <CourseTable/>
-      },
-      {
-        path:"course/create",
-        element:<AddCourse/>
-      },
-      {
-        path:"course/:courseId",
-        element:<EditCourse/>
-      },
-      {
-        path:"course/:courseId/lecture",
-        element:<CreateLecture/>
-      },
-      {
-        path:"course/:courseId/lecture/:lectureId",
-        element:<EditLecture/>
-      }
-    ]
-  }
 
 ])
 function App() {
