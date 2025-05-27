@@ -7,7 +7,7 @@ import { uploadMedia } from "../utils/cloudinary.js";
 const UserRoute=express.Router();
 
 UserRoute.route("/register").post(register);
-UserRoute.route("/login").post(login);
+ UserRoute.route("/login").post(login);
 UserRoute.route("/profile").get(isAuthenticated,getUserProfile);
 UserRoute.route("/logout").get(logout);
 UserRoute.route("/profile/update").put(isAuthenticated,upload.single("profilePhoto"),updateProfile);

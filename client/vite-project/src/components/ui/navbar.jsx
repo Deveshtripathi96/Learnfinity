@@ -1,5 +1,5 @@
 import { Menu, School2 } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -22,10 +22,40 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Separator } from '@radix-ui/react-dropdown-menu'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useLogoutUserMutation } from '@/features/api/authApi'
+import { toast } from 'sonner'
+import { useSelector } from 'react-redux'
+import { useDispatch } from "react-redux";
+import { userLoggedOut } from "@/features/authSlice"; // ✅ import this
 
 const Navbar = () => {
-  const user = true;
+  const {user}=useSelector(store=>store.auth)
+  const [logoutUser,{data,isSuccess}]=useLogoutUserMutation();
+  const navigate=useNavigate();
+ console.log(user);
+ const LogoutUserHandler=async ()=>{
+  await logoutUser();
+  
+ }
+  // useEffect(()=>{
+  //   if(isSuccess && data){
+      
+  //     toast.success(data.message ||"User log out successfully")
+      
+  //   }
+  //   navigate("/login");
+    
+  // },[isSuccess]);
+  const dispatch = useDispatch();
+
+useEffect(() => {
+  if (isSuccess) {
+    dispatch(userLoggedOut()); // ✅ clear user from Redux
+    toast.success(data?.message || "User logged out successfully");
+    navigate("/login"); // ✅ redirect to login
+  }
+}, [isSuccess, data, dispatch, navigate]);
 
   return (
     <header className="h-16 fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-gradient-to-r from-white to-white dark:from-emerald-950 dark:to-green-950 border-b border-black shadow-md transition-all duration-300">
@@ -43,7 +73,7 @@ const Navbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
@@ -53,7 +83,7 @@ const Navbar = () => {
                 <DropdownMenuGroup>
                   <DropdownMenuItem> <Link to="my-learning">My learning</Link></DropdownMenuItem>
                   <DropdownMenuItem> <Link to="profile">Edit profile</Link></DropdownMenuItem>
-                  <DropdownMenuItem>Log out</DropdownMenuItem>
+                  <DropdownMenuItem onClick={LogoutUserHandler}>Log out</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Dashboard</DropdownMenuItem>

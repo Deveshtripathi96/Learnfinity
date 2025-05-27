@@ -23,23 +23,27 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { userLoggedIn } from "@/features/authSlice"; // ✅ import it
 
 const Login = () => {
-  const [SignupInput, setSignupInput] = useState({
+  const [signupInput, setSignupInput] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const [LoginInput, setLoginInput] = useState({
+  const [loginInput, setLoginInput] = useState({
     email: "",
     password: "",
   });
 
-  const [registerUser, { data: registerData, error: registerError, isLoading: registerisLoading, isSuccess: registerSuccess }] = useRegisterUserMutation();
-  const [loginUser, { data: loginData, error: loginError, isLoading: loginIsloading, isSuccess: loginSuccess }] = useLoginUserMutation();
+  const [registerUser, { data: registerData, error: registerError, isLoading: isRegistering, isSuccess: registerSuccess }] = useRegisterUserMutation();
+  const [loginUser, { data: loginData, error: loginError, isLoading: isLoggingIn, isSuccess: loginSuccess }] = useLoginUserMutation();
 
-  const handler = (e, type) => {
+  const navigate = useNavigate();
+
+  const handleInputChange = (e, type) => {
     const { name, value } = e.target;
     if (type === "signup") {
       setSignupInput((prev) => ({ ...prev, [name]: value }));
@@ -47,31 +51,63 @@ const Login = () => {
       setLoginInput((prev) => ({ ...prev, [name]: value }));
     }
   };
-  const navigate=useNavigate();
 
-  const testhandle = async (type) => {
-    const inputdata = type === "signup" ? SignupInput : LoginInput;
+  const handleSubmit = async (type) => {
+    const inputData = type === "signup" ? signupInput : loginInput;
+
+    // Validation
+    if (Object.values(inputData).some((val) => !val)) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
     const action = type === "signup" ? registerUser : loginUser;
-    await action(inputdata);
-    console.log(inputdata);
+    await action(inputData);
   };
 
-  useEffect(() => {
-    if (registerError) {
-      toast.error(registerData?.data?.message || "Signup Failed");
-    }
-    if (loginError) {
-      toast.error(loginData?.data?.message || "Login Failed");
-    }
-    if (registerSuccess && registerData) {
-      toast.success(registerData.message || "Signup Successful");
-      navigate("/");
-    }
-    if (loginSuccess && loginData) {
-      toast.success(loginData.message || "Login Successful");
-      navigate("/");
-    }
-  }, [loginIsloading, registerisLoading, loginData, registerData, loginError, registerError]);
+  // useEffect(() => {
+  //   if (registerError) {
+  //     toast.error(registerError?.data?.message || "Signup Failed");
+  //   }
+  //   if (loginError) {
+  //     toast.error(loginError?.data?.message || "Login Failed");
+  //   }
+  //   if (registerSuccess && registerData) {
+  //     toast.success(registerData.message || "Signup Successful");
+  //     setSignupInput({ name: "", email: "", password: "" });
+  //     navigate("/");
+  //   }
+  //   if (loginSuccess && loginData) {
+  //     toast.success(loginData.message || "Login Successful");
+  //     setLoginInput({ email: "", password: "" });
+  //     navigate("/");
+  //   }
+  // }, [registerError, loginError, registerSuccess, loginSuccess]);
+  const dispatch = useDispatch();
+
+useEffect(() => {
+  if (registerError) {
+    toast.error(registerError?.data?.message || "Signup Failed");
+  }
+
+  if (loginError) {
+    toast.error(loginError?.data?.message || "Login Failed");
+  }
+
+  if (registerSuccess && registerData) {
+    dispatch(userLoggedIn({ user: registerData.user })); // ✅ update store
+    toast.success(registerData.message || "Signup Successful");
+    setSignupInput({ name: "", email: "", password: "" });
+    navigate("/");
+  }
+
+  if (loginSuccess && loginData) {
+    dispatch(userLoggedIn({ user: loginData.user })); // ✅ update store
+    toast.success(loginData.message || "Login Successful");
+    setLoginInput({ email: "", password: "" });
+    navigate("/");
+  }
+}, [registerError, loginError, registerSuccess, registerData, loginSuccess, loginData, dispatch, navigate]);
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4">
@@ -95,8 +131,8 @@ const Login = () => {
                   id="name"
                   name="name"
                   placeholder="Enter your name"
-                  value={SignupInput.name}
-                  onChange={(e) => handler(e, "signup")}
+                  value={signupInput.name}
+                  onChange={(e) => handleInputChange(e, "signup")}
                 />
               </div>
               <div className="space-y-1">
@@ -106,8 +142,8 @@ const Login = () => {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
-                  value={SignupInput.email}
-                  onChange={(e) => handler(e, "signup")}
+                  value={signupInput.email}
+                  onChange={(e) => handleInputChange(e, "signup")}
                 />
               </div>
               <div className="space-y-1">
@@ -117,16 +153,17 @@ const Login = () => {
                   name="password"
                   type="password"
                   placeholder="Enter your password"
-                  value={SignupInput.password}
-                  onChange={(e) => handler(e, "signup")}
+                  value={signupInput.password}
+                  onChange={(e) => handleInputChange(e, "signup")}
                 />
               </div>
             </CardContent>
             <CardFooter>
-              <Button disabled={registerisLoading} onClick={() => testhandle("signup")}>
-                {registerisLoading ? (
+              <Button disabled={isRegistering} onClick={() => handleSubmit("signup")}>
+                {isRegistering ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />Please wait
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait
                   </>
                 ) : (
                   "Signup"
@@ -145,31 +182,31 @@ const Login = () => {
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="space-y-1">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="loginEmail">Email</Label>
                 <Input
-                  id="email"
+                  id="loginEmail"
                   name="email"
                   type="email"
                   placeholder="Enter your email"
-                  value={LoginInput.email}
-                  onChange={(e) => handler(e, "login")}
+                  value={loginInput.email}
+                  onChange={(e) => handleInputChange(e, "login")}
                 />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="loginPassword">Password</Label>
                 <Input
-                  id="password"
+                  id="loginPassword"
                   name="password"
                   type="password"
                   placeholder="Enter your password"
-                  value={LoginInput.password}
-                  onChange={(e) => handler(e, "login")}
+                  value={loginInput.password}
+                  onChange={(e) => handleInputChange(e, "login")}
                 />
               </div>
             </CardContent>
             <CardFooter>
-              <Button disabled={loginIsloading} onClick={() => testhandle("login")}>
-                {loginIsloading ? (
+              <Button disabled={isLoggingIn} onClick={() => handleSubmit("login")}>
+                {isLoggingIn ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Please wait

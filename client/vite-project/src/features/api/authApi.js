@@ -44,6 +44,14 @@ export const authApi=createApi({
                 url:"profile",
                 method:"GET",
             }),
+            async onQueryStarted(arg,{queryFulfilled,dispatch}){
+                try {
+                    const result=await queryFulfilled;
+                    dispatch(userLoggedIn({user:result.data.user}));
+                } catch (error) {
+                    console.log(error);
+                }
+            }
 
         }),
         updateUser:builder.mutation({
@@ -54,6 +62,12 @@ export const authApi=createApi({
             credentials:"include"
             })
         }),
+        logoutUser:builder.mutation({
+            query:()=>({
+                url:"logout",
+                method:"GET",
+            })
+        })
        
          
         
@@ -63,4 +77,4 @@ export const authApi=createApi({
     
 })
 
-export const {useRegisterUserMutation,useLoginUserMutation,useLoadUserQuery,useUpdateUserMutation}=authApi;
+export const {useRegisterUserMutation,useLoginUserMutation,useLoadUserQuery,useUpdateUserMutation,useLogoutUserMutation}=authApi;
