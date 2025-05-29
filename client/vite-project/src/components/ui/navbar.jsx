@@ -85,16 +85,23 @@ useEffect(() => {
                   <DropdownMenuItem> <Link to="profile">Edit profile</Link></DropdownMenuItem>
                   <DropdownMenuItem onClick={LogoutUserHandler}>Log out</DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator />
+                {
+                  user.role==="instructor" &&(
+                    <>
+                     <DropdownMenuSeparator />
                 <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                    </>
+                  )
+                }
+               
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Button variant="outline" className="text-white border-white hover:bg-white/10">
+              <Button variant="outline" className="bg-white text-green-800 hover:bg-gray-100" onClick={()=>navigate("/login")}>
                 Login
               </Button>
-              <Button className="bg-white text-green-800 hover:bg-gray-100">
+              <Button className="bg-white text-green-800 hover:bg-gray-100" onClick={()=>navigate("/login")}>
                 Signup
               </Button>
             </div>

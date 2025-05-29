@@ -87,11 +87,11 @@ const Login = () => {
 
 useEffect(() => {
   if (registerError) {
-    toast.error(registerError?.data?.message || "Signup Failed");
+    toast.error(registerError.data.message || "Signup Failed");
   }
 
   if (loginError) {
-    toast.error(loginError?.data?.message || "Login Failed");
+    toast.error(loginError.data.message || "Login Failed");
   }
 
   if (registerSuccess && registerData) {

@@ -32,7 +32,7 @@ const onChangeHandler=(e)=>{
 
   const {data,isLoading,refetch}=useLoadUserQuery();
   const [updateUser,{data:updateUserdata,isLoading:updateUserIsLoading,error,isError,isSuccess:updateUserSuccess}]=useUpdateUserMutation();
-  console.log(data);
+  
   
   const {user}=data || {};
   const updateUserHandler= async ()=>{
@@ -42,6 +42,10 @@ const onChangeHandler=(e)=>{
 
    await updateUser(formData);
   };
+
+  useEffect(()=>{
+    refetch();
+  },[])
   useEffect(() => {
     if (updateUserSuccess) {
       refetch();
