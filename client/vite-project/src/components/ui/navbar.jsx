@@ -33,7 +33,7 @@ const Navbar = () => {
   const {user}=useSelector(store=>store.auth)
   const [logoutUser,{data,isSuccess}]=useLogoutUserMutation();
   const navigate=useNavigate();
- console.log(user);
+ //console.log(user);
  const LogoutUserHandler=async ()=>{
   await logoutUser();
   

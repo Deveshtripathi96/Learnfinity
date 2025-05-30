@@ -83,12 +83,6 @@ export const login = async (req, res) => {
 
         // Generate token and send response
         generateToken(res, user, `Welcome back ${user.name}`);
-        // return res.status(200).json({
-        //     success: true,
-        //     message: `Welcome back ${user.name}`,
-        //     user, 
-        // });
-
     } catch (error) {
         console.error(error);
         return res.status(500).json({

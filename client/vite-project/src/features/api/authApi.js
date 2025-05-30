@@ -1,6 +1,7 @@
 import {createApi,fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import { userLoggedIn } from "../authSlice";
 import { Form } from "react-router-dom";
+import { toast } from "sonner";
 
 
 const USER_API="http://localhost:8080/api/v1/user/"
@@ -26,14 +27,18 @@ export const authApi=createApi({
             query:(inputData)=>({
                 url:"login",
                 method:"POST",
-                body:inputData
+                body:inputData,
+                 credentials: "include", // 👈 required if using cookies/session
             }),
             async onQueryStarted(arg,{queryFulfilled,dispatch}){
                 try {
                     const result=await queryFulfilled;
+                     console.log("Login Success:", result.data); // ✅ Check this
                     dispatch(userLoggedIn({user:result.data.user}));
+                      toast.success(result.data.message); // ✅ Show toast here if needed
                 } catch (error) {
                     console.log(error);
+                      toast.error("Login failed");
                 }
             }
 

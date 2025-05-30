@@ -54,7 +54,7 @@ const Login = () => {
 
   const handleSubmit = async (type) => {
     const inputData = type === "signup" ? signupInput : loginInput;
-
+     console.log("Submitting:", type, inputData); // 👈 Add this
     // Validation
     if (Object.values(inputData).some((val) => !val)) {
       toast.error("Please fill in all fields.");
@@ -100,8 +100,12 @@ useEffect(() => {
     setSignupInput({ name: "", email: "", password: "" });
     navigate("/");
   }
+console.log("Login success:", loginSuccess); // 👈 Add this
+  console.log("LoginData:", loginData);
 
   if (loginSuccess && loginData) {
+   
+     console.log("Hamba hamba ramba ramba");
     dispatch(userLoggedIn({ user: loginData.user })); // ✅ update store
     toast.success(loginData.message || "Login Successful");
     setLoginInput({ email: "", password: "" });

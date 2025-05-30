@@ -1,17 +1,16 @@
-import express from "express";
-import dotenv from "dotenv";
-import UserRoute from "./routes/user.routes.js"
+import express from "express"
+import connectDB from "./dataBase/db.js";
+import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
-import cors from "cors";
-
-
-
+import cors from "cors"
+import courseRoute from "./routes/course.route.js"
+import UserRoute from "./routes/user.routes.js"
+import mediaRoute from "./routes/media.route.js"
 dotenv.config({});
-import connectDB from "./database/dB.js";
-const app=express();
 //database called
 connectDB();
-  
+
+const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
@@ -23,6 +22,8 @@ app.use(cors({
 
 // apis
 app.use("/api/v1/user",UserRoute);
+app.use("/api/v1/course",courseRoute)
+app.use("/api/v1/media",mediaRoute)
 
 app.get("/home",(_,res)=>{
     res.status(200).json({
