@@ -100,12 +100,11 @@ useEffect(() => {
     setSignupInput({ name: "", email: "", password: "" });
     navigate("/");
   }
-console.log("Login success:", loginSuccess); // 👈 Add this
-  console.log("LoginData:", loginData);
+
 
   if (loginSuccess && loginData) {
    
-     console.log("Hamba hamba ramba ramba");
+    
     dispatch(userLoggedIn({ user: loginData.user })); // ✅ update store
     toast.success(loginData.message || "Login Successful");
     setLoginInput({ email: "", password: "" });
