@@ -63,9 +63,12 @@ useEffect(() => {
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center px-6 h-full">
         <div className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition">
           <School2 size={26} className="text-black drop-shadow-md" />
-          <h1 className="font-extrabold text-2xl text-black drop-shadow-md tracking-wide">
+          <Link to="/">
+           <h1 className="font-extrabold text-2xl text-black drop-shadow-md tracking-wide">
             E-learning
           </h1>
+          </Link>
+         
         </div>
 
         <div className="flex items-center gap-5 border-black">

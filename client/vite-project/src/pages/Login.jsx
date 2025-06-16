@@ -23,7 +23,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLoggedIn } from "@/features/authSlice"; // ✅ import it
 
 const Login = () => {
@@ -84,6 +84,7 @@ const Login = () => {
   //   }
   // }, [registerError, loginError, registerSuccess, loginSuccess]);
   const dispatch = useDispatch();
+  
 
 useEffect(() => {
   if (registerError) {

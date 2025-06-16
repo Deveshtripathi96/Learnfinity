@@ -12,6 +12,8 @@ function CourseTable() {
     // if(isLoading)return <h1>Loading...</h1>
 
     // console.log(data)
+    console.log("Creator course data:", data);
+
     const navigate = useNavigate();
   return (
     <div>
@@ -30,7 +32,7 @@ function CourseTable() {
         {data?.courses.map((course) => (
           <TableRow key={course?._id}>
             <TableCell className="font-medium">{course?.price || "NA"}</TableCell>
-            <TableCell><Badge>{course.isPublised ? "Published" : "Draft"}</Badge></TableCell>
+            <TableCell><Badge>{course.isPublished ? "Published" : "Draft"}</Badge></TableCell>
             <TableCell>{course?.Title}</TableCell>
             <TableCell className="text-right"><Button size ='sm' variant={Ghost} onClick={()=>navigate(`${course._id}`)}><Edit/></Button></TableCell>
           </TableRow>
