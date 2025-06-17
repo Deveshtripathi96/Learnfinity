@@ -6,6 +6,8 @@ import cors from "cors"
 import courseRoute from "./routes/course.route.js"
 import UserRoute from "./routes/user.routes.js"
 import mediaRoute from "./routes/media.route.js"
+import courseProgressRoute from "./routes/courseProgress.route.js"
+import purchaseRoute from "./routes/purchaseCourse.route.js"
 dotenv.config({});
 //database called
 connectDB();
@@ -22,8 +24,10 @@ app.use(cors({
 
 // apis
 app.use("/api/v1/user",UserRoute);
-app.use("/api/v1/course",courseRoute)
-app.use("/api/v1/media",mediaRoute)
+app.use("/api/v1/course",courseRoute);
+app.use("/api/v1/media",mediaRoute);
+app.use("/api/v1/purchase", purchaseRoute);
+app.use("/api/v1/progress", courseProgressRoute);
 
 app.get("/home",(_,res)=>{
     res.status(200).json({

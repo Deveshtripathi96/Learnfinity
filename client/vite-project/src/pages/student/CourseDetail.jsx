@@ -1,4 +1,4 @@
-//import BuyCourseButton from "@/components/BuyCourseButton";
+import BuyCourseButton from "@/components/ui/BuyCourseButton";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-//import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import { useGetCourseDetailWithStatusQuery } from "@/features/api/purchaseApi";
 import { BadgeInfo, Lock, PlayCircle } from "lucide-react";
 import React from "react";
@@ -23,7 +23,7 @@ const CourseDetail = () => {
     useGetCourseDetailWithStatusQuery(courseId);
 
   if (isLoading) return <h1>Loading...</h1>;
-  if (isError) return <h>Failed to load course details</h>;
+  if (isError) return <h1>Failed to load course details</h1>;
 
   const { course, purchased } = data;
   console.log(purchased);
