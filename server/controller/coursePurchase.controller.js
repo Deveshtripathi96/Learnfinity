@@ -21,7 +21,7 @@ export const createCheckoutSession = async (req, res) => {
       amount: course.price,
       status: "pending",
     });
-
+    console.log("coursePrice:", course.price, typeof course.price);
     // Create a Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -30,10 +30,10 @@ export const createCheckoutSession = async (req, res) => {
           price_data: {
             currency: "inr",
             product_data: {
-              name: course.courseTitle,
+              name: course.Title,
               images: [course.courseThumbnail],
             },
-            unit_amount: course.coursePrice * 100, // Amount in paise (lowest denomination)
+            unit_amount: Math.round(course.price * 100), // Amount in paise (lowest denomination)
           },
           quantity: 1,
         },

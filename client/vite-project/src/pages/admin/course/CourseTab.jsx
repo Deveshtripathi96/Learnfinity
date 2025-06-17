@@ -333,7 +333,7 @@ const CourseTab = () => {
     formData.append("courseLevel", input.courseLevel);
     formData.append("price", input.coursePrice);
     formData.append("courseThumbnail", input.courseThumbnail);
-
+     console.log("Sending courseId:", courseId);
     await editCourse({formdata: formData, courseId });
   };
 
@@ -449,7 +449,7 @@ const CourseTab = () => {
                     <SelectLabel>Course Level</SelectLabel>
                     <SelectItem value="Beginner">Beginner</SelectItem>
                     <SelectItem value="Medium">Medium</SelectItem>
-                    <SelectItem value="Advance">Advance</SelectItem>
+                    <SelectItem value="Advanced">Advanced</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
