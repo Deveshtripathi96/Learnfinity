@@ -1,7 +1,7 @@
-import { Menu, School2 } from 'lucide-react'
-import React, { useEffect } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { Menu, School2 } from "lucide-react";
+import React, { useEffect } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,160 +10,149 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
+} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import { Separator } from '@radix-ui/react-dropdown-menu'
-import { Link, useNavigate } from 'react-router-dom'
-import { useLogoutUserMutation } from '@/features/api/authApi'
-import { toast } from 'sonner'
-import { useSelector } from 'react-redux'
-import { useDispatch } from "react-redux";
-import { userLoggedOut } from "@/features/authSlice"; // ✅ import this
-import DarkMode from '@/Darkmode'
+} from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogoutUserMutation } from "@/features/api/authApi";
+import { toast } from "sonner";
+import { useSelector, useDispatch } from "react-redux";
+import { userLoggedOut } from "@/features/authSlice";
+import DarkMode from "@/Darkmode";
 
 const Navbar = () => {
-  const {user}=useSelector(store=>store.auth)
-  const [logoutUser,{data,isSuccess}]=useLogoutUserMutation();
-  const navigate=useNavigate();
- //console.log(user);
- const LogoutUserHandler=async ()=>{
-  await logoutUser();
-  
- }
-  // useEffect(()=>{
-  //   if(isSuccess && data){
-      
-  //     toast.success(data.message ||"User log out successfully")
-      
-  //   }
-  //   navigate("/login");
-    
-  // },[isSuccess]);
+  const { user } = useSelector((store) => store.auth);
+  const [logoutUser, { data, isSuccess }] = useLogoutUserMutation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-useEffect(() => {
-  if (isSuccess) {
-    dispatch(userLoggedOut()); // ✅ clear user from Redux
-    toast.success(data?.message || "User logged out successfully");
-    navigate("/login"); // ✅ redirect to login
-  }
-}, [isSuccess, data, dispatch, navigate]);
+  const LogoutUserHandler = async () => {
+    await logoutUser();
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(userLoggedOut());
+      toast.success(data?.message || "User logged out successfully");
+      navigate("/login");
+    }
+  }, [isSuccess, data, dispatch, navigate]);
 
   return (
-    <header className="h-16 fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-gradient-to-r from-white to-white dark:from-emerald-950 dark:to-green-950 border-b border-black shadow-md transition-all duration-300">
-      {/* Desktop */}
+    <header className="h-16 fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-gradient-to-r from-white to-white dark:from-[#0c0c0c] dark:to-[#1a1a1a] border-b border-black/10 shadow-sm transition-colors duration-300">
+      {/* Desktop View */}
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center px-6 h-full">
-        <div className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition">
-          <School2 size={26} className="text-black drop-shadow-md" />
-          <Link to="/">
-           <h1 className="font-extrabold text-2xl text-black drop-shadow-md tracking-wide">
+        <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition">
+          <School2 size={26} className="text-black dark:text-white" />
+          <h1 className="font-extrabold text-2xl text-black dark:text-white tracking-wide">
             E-learning
           </h1>
-          </Link>
-         
-        </div>
+        </Link>
 
-        <div className="flex items-center gap-5 border-black">
+        <div className="flex items-center gap-4">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar>
                   <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>{user?.name?.slice(0, 2)?.toUpperCase() || "U"}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-gray-100 dark:bg-[#1a1a1a] text-sm">
+              <DropdownMenuContent className="w-56 bg-white dark:bg-gray-900 border dark:border-gray-700">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem> <Link to="my-learning">My learning</Link></DropdownMenuItem>
-                  <DropdownMenuItem> <Link to="profile">Edit profile</Link></DropdownMenuItem>
-                  <DropdownMenuItem onClick={LogoutUserHandler}>Log out</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/my-learning" className="w-full block">My Learning</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/profile" className="w-full block">Edit Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={LogoutUserHandler}>Log Out</DropdownMenuItem>
                 </DropdownMenuGroup>
-                {
-                  user.role==="instructor" &&(
-                    <>
-                     <DropdownMenuSeparator />
-                <DropdownMenuItem><Link to="/admin/dashboard">Dashboard</Link></DropdownMenuItem>
-                    </>
-                  )
-                }
-               
+                {user.role === "instructor" && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link to="/admin/dashboard" className="w-full block">Dashboard</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Button variant="outline" className="bg-white text-green-800 hover:bg-gray-100" onClick={()=>navigate("/login")}>
-                Login
-              </Button>
-              <Button className="bg-white text-green-800 hover:bg-gray-100" onClick={()=>navigate("/login")}>
-                Signup
-              </Button>
+              <Button variant="outline" onClick={() => navigate("/login")}>Login</Button>
+              <Button onClick={() => navigate("/signup")}>Signup</Button>
             </div>
           )}
           <DarkMode />
         </div>
       </div>
 
-      {/* Mobile */}
-      <div className="flex md:hidden items-center justify-between px-4 h-full">
-        <div className="flex items-center gap-2">
-          <School2 size={24} className="text-white" />
-          <h1 className="font-bold text-xl text-white">E-learning</h1>
-        </div>
-        <MobileNavbar />
+      {/* Mobile View */}
+      <div className="md:hidden flex items-center justify-between px-4 h-full">
+        <Link to="/" className="flex items-center gap-2">
+          <School2 size={24} className="text-black dark:text-white" />
+          <h1 className="font-bold text-xl text-black dark:text-white">E-learning</h1>
+        </Link>
+        <MobileNavbar user={user} onLogout={LogoutUserHandler} />
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
 
-const MobileNavbar = () => {
-  const role = 'instructor'
+const MobileNavbar = ({ user, onLogout }) => {
+  const navigate = useNavigate();
 
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button
           size="icon"
-          className="rounded-full bg-white/20 text-white hover:bg-white/30 backdrop-blur"
           variant="outline"
+          className="rounded-full bg-cyan-500 text-black dark:text-white hover:bg-white/30 backdrop-blur"
         >
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col dark:bg-[#0c0c0c]">
+      <SheetContent className="flex flex-col dark:bg-[#0c0c0c] bg-blend-soft-light text-black dark:text-white">
         <SheetHeader className="flex flex-row items-center justify-between mt-2">
-          <SheetTitle className="text-lg font-bold text-white">E-learning</SheetTitle>
+          <SheetTitle className="text-lg font-bold  dark:text-white text-gray-900">E-learning</SheetTitle>
           <DarkMode />
         </SheetHeader>
         <Separator className="my-4" />
-        <nav className="flex flex-col space-y-4 text-base font-medium text-white">
-          <span>My learning</span>
-          <span>Edit profile</span>
-          <span>Log out</span>
+        <nav className="flex flex-col gap-4 mx-5">
+          {user ? (
+            <>
+              <Link to="/my-learning" className="hover:underline">My Learning</Link>
+              <Link to="/profile" className="hover:underline">Edit Profile</Link>
+              <span onClick={onLogout} className="cursor-pointer hover:underline">Log Out</span>
+              {user.role === "instructor" && (
+                <Link
+                  to="/admin/dashboard"
+                  className="hover:underline text-center mt-6 bg-white text-green-800 py-2 rounded-md hover:bg-gray-100 transition"
+                >
+                  Dashboard
+                </Link>
+              )}
+            </>
+          ) : (
+            <>
+              <Button variant="outline" onClick={() => navigate("/login")}>Login</Button>
+              <Button onClick={() => navigate("/login")}>Signup</Button>
+            </>
+          )}
         </nav>
-        {role === 'instructor' && (
-          <SheetFooter className="mt-auto pt-4">
-            <SheetClose asChild>
-              <Button type="submit" className="w-full bg-white text-green-800 hover:bg-gray-100">
-                Dashboard
-              </Button>
-            </SheetClose>
-          </SheetFooter>
-        )}
       </SheetContent>
     </Sheet>
-  )
-  
-}
+  );
+};
