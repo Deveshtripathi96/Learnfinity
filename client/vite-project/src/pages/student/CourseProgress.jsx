@@ -15,45 +15,32 @@ import { toast } from "sonner";
 const CourseProgress = () => {
   const params = useParams();
   const courseId = params.courseId;
-  const { data, isLoading, isError, refetch } =
-    useGetCourseProgressQuery(courseId);
 
+  const { data, isLoading, isError, refetch } = useGetCourseProgressQuery(courseId);
   const [updateLectureProgress] = useUpdateLectureProgressMutation();
-  const [
-    completeCourse,
-    { data: markCompleteData, isSuccess: completedSuccess },
-  ] = useCompleteCourseMutation();
-  const [
-    inCompleteCourse,
-    { data: markInCompleteData, isSuccess: inCompletedSuccess },
-  ] = useInCompleteCourseMutation();
-
-  useEffect(() => {
-    console.log(markCompleteData);
-
-    if (completedSuccess) {
-      refetch();
-      toast.success(markCompleteData.message);
-    }
-    if (inCompletedSuccess) {
-      refetch();
-      toast.success(markInCompleteData.message);
-    }
-  }, [completedSuccess, inCompletedSuccess]);
+  const [completeCourse, { data: markCompleteData, isSuccess: completedSuccess }] = useCompleteCourseMutation();
+  const [inCompleteCourse, { data: markInCompleteData, isSuccess: inCompletedSuccess }] = useInCompleteCourseMutation();
 
   const [currentLecture, setCurrentLecture] = useState(null);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Failed to load course details</p>;
+  useEffect(() => {
+    if (completedSuccess) {
+      refetch();
+      toast.success(markCompleteData?.message || "Course marked as complete");
+    }
+    if (inCompletedSuccess) {
+      refetch();
+      toast.success(markInCompleteData?.message || "Course marked as incomplete");
+    }
+  }, [completedSuccess, inCompletedSuccess]);
 
-  console.log(data);
+  if (isLoading) return <p className="text-center py-10 text-lg">Loading...</p>;
+  if (isError) return <p className="text-center py-10 text-red-500">Failed to load course details</p>;
 
   const { courseDetails, progress, completed } = data.data;
-  const { courseTitle } = courseDetails;
+  const { courseTitle, lectures } = courseDetails;
 
-  // initialze the first lecture is not exist
-  const initialLecture =
-    currentLecture || (courseDetails.lectures && courseDetails.lectures[0]);
+  const initialLecture = currentLecture || (lectures.length > 0 ? lectures[0] : null);
 
   const isLectureCompleted = (lectureId) => {
     return progress.some((prog) => prog.lectureId === lectureId && prog.viewed);
@@ -63,102 +50,92 @@ const CourseProgress = () => {
     await updateLectureProgress({ courseId, lectureId });
     refetch();
   };
-  // Handle select a specific lecture to watch
-  const handleSelectLecture = (lecture) => {
-    console.log("Current video URL:", currentLecture?.videoUrl || initialLecture?.videoUrl);
 
+  const handleSelectLecture = (lecture) => {
     setCurrentLecture(lecture);
     handleLectureProgress(lecture._id);
   };
 
-
   const handleCompleteCourse = async () => {
     await completeCourse(courseId);
   };
+
   const handleInCompleteCourse = async () => {
     await inCompleteCourse(courseId);
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 mt-15 my-5">
-      {/* Display course name  */}
-      <div className="flex justify-between mb-4">
-        <h1 className="text-2xl font-bold">{courseTitle}</h1>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Course Title & Completion Button */}
+      <div className="flex justify-between items-center flex-wrap mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{courseTitle}</h1>
         <Button
           onClick={completed ? handleInCompleteCourse : handleCompleteCourse}
           variant={completed ? "outline" : "default"}
+          className="mt-4 md:mt-0"
         >
           {completed ? (
-            <div className="flex items-center">
-              <CheckCircle className="h-4 w-4 mr-2" /> <span>Completed</span>{" "}
-            </div>
+            <span className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5" />
+              Completed
+            </span>
           ) : (
-            "Mark as completed"
+            "Mark as Completed"
           )}
         </Button>
       </div>
-        
+
+      {/* Main Layout */}
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Video section  */}
-        <div className="flex-1 md:w-3/5 h-fit rounded-lg shadow-lg p-4">
-          <div>
-            <video
-            
-              src={currentLecture?.videoUrl || initialLecture.videoUrl}
-              controls
-              className="w-full h-auto md:rounded-lg"
-               onError={() => console.error("Error loading video")}
-              onPlay={() =>
-                handleLectureProgress(currentLecture?._id || initialLecture._id)
-              }
-            />
-          </div>
-          {/* Display current watching lecture title */}
-          <div className="mt-2 ">
-            <h3 className="font-medium text-lg">
-              {`Lecture ${
-                courseDetails.lectures.findIndex(
-                  (lec) =>
-                    lec._id === (currentLecture?._id || initialLecture._id)
-                ) + 1
-              } : ${
-                currentLecture?.lectureTitle || initialLecture.lectureTitle
-              }`}
-            </h3>
-          </div>
+        {/* Video Player */}
+        <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+          {initialLecture ? (
+            <>
+              <video
+                key={initialLecture.videoUrl}
+                src={currentLecture?.videoUrl || initialLecture.videoUrl}
+                controls
+                className="w-full rounded-lg aspect-video mb-4"
+                onPlay={() =>
+                  handleLectureProgress(currentLecture?._id || initialLecture._id)
+                }
+              />
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                {`Lecture ${
+                  lectures.findIndex((lec) => lec._id === (currentLecture?._id || initialLecture._id)) + 1
+                }: ${currentLecture?.lectureTitle || initialLecture.lectureTitle}`}
+              </h2>
+            </>
+          ) : (
+            <p className="text-center text-gray-500">No lectures available</p>
+          )}
         </div>
-        {/* Lecture Sidebar  */}
-        <div className="flex flex-col w-full md:w-2/5 border-t md:border-t-0 md:border-l border-gray-200 md:pl-4 pt-4 md:pt-0">
-          <h2 className="font-semibold text-xl mb-4">Course Lecture</h2>
-          <div className="flex-1 overflow-y-auto">
-            {courseDetails?.lectures.map((lecture) => (
+
+        {/* Lecture Sidebar */}
+        <div className="w-full md:w-[35%] space-y-4">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Course Lectures</h3>
+          <div className="overflow-y-auto max-h-[70vh] pr-2">
+            {lectures.map((lecture) => (
               <Card
                 key={lecture._id}
-                className={`mb-3 hover:cursor-pointer transition transform ${
+                className={`cursor-pointer border ${
                   lecture._id === currentLecture?._id
-                    ? "bg-gray-200 dark:dark:bg-gray-800"
-                    : ""
-                } `}
+                    ? "border-blue-500 bg-blue-50 dark:bg-gray-700"
+                    : "hover:border-gray-400"
+                } transition-all duration-200`}
                 onClick={() => handleSelectLecture(lecture)}
               >
                 <CardContent className="flex items-center justify-between p-4">
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-3">
                     {isLectureCompleted(lecture._id) ? (
-                      <CheckCircle2 size={24} className="text-green-500 mr-2" />
+                      <CheckCircle2 className="text-green-500" size={20} />
                     ) : (
-                      <CirclePlay size={24} className="text-gray-500 mr-2" />
+                      <CirclePlay className="text-gray-500" size={20} />
                     )}
-                    <div>
-                      <CardTitle className="text-lg font-medium">
-                        {lecture.lectureTitle}
-                      </CardTitle>
-                    </div>
+                    <CardTitle className="text-base">{lecture.lectureTitle}</CardTitle>
                   </div>
                   {isLectureCompleted(lecture._id) && (
-                    <Badge
-                      variant={"outline"}
-                      className="bg-green-200 text-green-600"
-                    >
+                    <Badge variant="outline" className="bg-green-100 text-green-600">
                       Completed
                     </Badge>
                   )}

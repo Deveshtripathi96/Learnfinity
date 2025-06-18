@@ -54,7 +54,7 @@ const Navbar = () => {
     <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition">
       <School2 size={26} className="text-blue-700 dark:text-white" />
       <h1 className="font-extrabold text-2xl text-gray-800 dark:text-white tracking-wide">
-        E-learning
+        Learnifinity
       </h1>
     </Link>
 
@@ -132,7 +132,7 @@ const MobileNavbar = ({ user, onLogout }) => {
       </SheetTrigger>
       <SheetContent className="flex flex-col dark:bg-[#0c0c0c] bg-white text-gray-800 dark:text-white">
         <SheetHeader className="flex flex-row items-center justify-between mt-2">
-          <SheetTitle className="text-lg font-bold">E-learning</SheetTitle>
+          <SheetTitle className="text-lg font-bold">Learnifinity</SheetTitle>
           <DarkMode />
         </SheetHeader>
         <Separator className="my-4" />
