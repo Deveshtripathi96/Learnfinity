@@ -33,6 +33,53 @@ export const createCourse = async (req, res) => {
     }
 }
 
+export const searchCourse = async (req,res) => {
+    try {
+        const {query = "", categories = [], sortByPrice =""} = req.query;
+        console.log(categories);
+        
+    let parsedCategories = categories;
+    if (typeof categories === "string") {
+      parsedCategories = categories.split(",");
+    }
+        
+        // create search query
+        const searchCriteria = {
+            isPublished:true,
+            $or:[
+                {Title: {$regex:query, $options:"i"}},
+                {subTitle: {$regex:query, $options:"i"}},
+                {category: {$regex:query, $options:"i"}},
+            ]
+        }
+
+        // if categories selected
+        if(parsedCategories.length > 0) {
+            searchCriteria.category = {$in: parsedCategories};
+        }
+
+        // define sorting order
+        const sortOptions = {};
+        if(sortByPrice === "low"){
+            sortOptions.price = 1;//sort by price in ascending
+        }else if(sortByPrice === "high"){
+            sortOptions.price = -1; // descending
+        }
+      console.log("Parsed Categories:", parsedCategories);
+       console.log("Sort Option:", sortByPrice);
+        let courses = await Course.find(searchCriteria).populate({path:"creator", select:"name photoUrl"}).sort(sortOptions);
+
+        return res.status(200).json({
+            success:true,
+            courses: courses || []
+        });
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 export const getAdminCourses = async (req, res) => {
     try {
         const adminId = req.id;
@@ -189,6 +236,7 @@ export const getCourseLecture = async (req, res) => {
 }
 
 export const editLecture = async (req, res) => {
+    console.log("Incoming edit data:", req.body);
     try {
         const { lectureTitle, videoInfo, isPreviewFree } = req.body;
         const { courseId, lectureId } = req.params
@@ -204,7 +252,13 @@ export const editLecture = async (req, res) => {
         if (videoInfo?.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
         if (videoInfo?.publicId) lecture.publicId = videoInfo.publicId;
         lecture.isPreviewFree = isPreviewFree;
-
+        console.log("To be saved:", {
+  title: lectureTitle,
+  url: videoInfo?.videoUrl,
+  id: videoInfo?.publicId
+});
+ const updated = await lecture.save();
+console.log("After update:", updated);
         await lecture.save()
 
         // push lecture id in the course if it not present 

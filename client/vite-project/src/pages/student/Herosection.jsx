@@ -1,6 +1,19 @@
-import React from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+  const searchHandler = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim() !== "") {
+      navigate(`/course/search?query=${searchQuery}`)
+    }
+    setSearchQuery("");
+  }
+
   return (
     <section className="relative w-full bg-gradient-to-r from-green-700 to-emerald-800 dark:from-green-950 dark:to-emerald-950 pt-24 pb-24 px-6 text-white overflow-hidden">
       {/* Glowing Background Orbs */}
@@ -16,20 +29,17 @@ const HeroSection = () => {
         </p>
 
         {/* Search Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
-          <input
+             <form onSubmit={searchHandler} className="flex items-center bg-white dark:bg-gray-800 rounded-full shadow-lg overflow-hidden max-w-xl mx-auto mb-6">
+          <Input
             type="text"
-            placeholder="Search for courses..."
-            className="px-6 py-3 w-80 max-w-full rounded-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 bg-white shadow-sm"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search Courses"
+            className="flex-grow border-none focus-visible:ring-0 px-6 py-3 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
           />
-          <button className="bg-white text-green-800 px-6 py-3 rounded-full font-semibold shadow-md hover:bg-gray-100 transition-all">
-            Search
-          </button>
-        </div>
-
-        <button className="bg-white text-green-800 font-semibold px-6 py-3 rounded-xl shadow-md transition-all duration-300 hover:bg-gray-100 hover:scale-105 hover:shadow-lg active:scale-100">
-          Explore Courses
-        </button>
+          <Button type="submit" className="bg-blue-600 dark:bg-blue-700 text-white px-6 py-3 rounded-r-full hover:bg-blue-700 dark:hover:bg-blue-800">Search</Button>
+        </form>
+       <Button onClick={()=> navigate(`/course/search?query`)} className="bg-white dark:bg-gray-800 text-blue-600 rounded-full hover:bg-gray-200">Explore Courses</Button>
       </div>
     </section>
   );

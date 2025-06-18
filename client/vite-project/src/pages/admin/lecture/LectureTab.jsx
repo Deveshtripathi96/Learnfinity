@@ -41,20 +41,24 @@ const LectureTab = () => {
   const fileChangeHandler = async (e) => {
     const file = e.target.files[0];
     if (file) {
+       setBtnDisable(true);
       const formData = new FormData();
       formData.append("file", file);
       setMediaProgress(true);
       try {
+        
         const res = await axios.post(`${MEDIA_API}/upload-video`, formData, {
           onUploadProgress: ({ loaded, total }) => {
             setUploadProgress(Math.round((loaded * 100) / total));
           },
         });
+        console.log("Upload response:", res.data);
+
 
         if (res.data.success) {
           console.log(res.data);
           setUploadVideoInfo({
-            videoUrl: res.data.data.url,
+            videoUrl: res.data.data.secure_url,
             publicId: res.data.data.public_id,
           });
           setBtnDisable(false);
@@ -72,9 +76,32 @@ const LectureTab = () => {
     setIsFree(e.target.checked);
   }
   const editLectureHandler = async () => {
+
+     // Block submission if video is uploading
+  if (mediaProgress) {
+    toast.error("Please wait until the new video is fully uploaded.");
+    return;
+  }
+    const finalVideoInfo = uploadVideoInfo || {
+    videoUrl: lecture?.videoUrl,
+    publicId: lecture?.publicId,
+  };
+
+    if (!uploadVideoInfo?.videoUrl || !uploadVideoInfo?.publicId) {
+    toast.error("Please upload a video before saving.");
+    return;
+  }
+
+         console.log("Sending to editLecture:", {
+    lectureTitle,
+    videoInfo: finalVideoInfo,
+    isPreviewFree: isFree,
+    courseId,
+    lectureId,
+  });
     await editLecture({
       lectureTitle,
-      videoInfo:uploadVideoInfo,
+      videoInfo:finalVideoInfo,
       isPreviewFree:isFree,
       courseId,
       lectureId,
@@ -84,13 +111,22 @@ const LectureTab = () => {
   const {data:lectureData} = useGetLectureByIdQuery(lectureId);
   const lecture = lectureData ?.lecture;
 
-  useEffect(()=>{
-     if(lecture){
-        setLectureTitle(lecture.lectureTitle)
-        setIsFree(lecture.isPreviewFree)
-        setUploadVideoInfo(lecture.videoInfo)
-     }
-  },[lecture])
+ useEffect(() => {
+  if (lecture) {
+    setLectureTitle(lecture.lectureTitle);
+    setIsFree(lecture.isPreviewFree);
+
+    // ✅ Only set if video exists
+    if (lecture.videoUrl && lecture.publicId) {
+      setUploadVideoInfo({
+        videoUrl: lecture.videoUrl,
+        publicId: lecture.publicId,
+      });
+    } else {
+      setUploadVideoInfo(null); // or keep previous upload data
+    }
+  }
+}, [lecture]);
   const [removeLecture,{data: removeData,isLoading:removeLoading,isSuccess:removeSuccess}] = useRemoveLectureMutation();
 
   const removeLectureHadler = async() =>{
@@ -159,6 +195,10 @@ const LectureTab = () => {
         </div>
         {
           <div className="my-4">
+           {/* Show Uploading Status */}
+  {mediaProgress && (
+    <p className="text-yellow-600 text-sm mt-2">Uploading new video...</p>
+  )}
             <Progress value={uploadProgress} />
             <p>{uploadProgress} % uploaded</p>
           </div>
