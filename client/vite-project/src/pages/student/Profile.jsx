@@ -58,7 +58,7 @@ const onChangeHandler=(e)=>{
   }, [error, updateUserdata, updateUserSuccess, isError]);
   
   
- const enrolledCourses=[1,2,3];
+ const enrolledCourses=data?.user.enrolledCourses || [];
  
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
