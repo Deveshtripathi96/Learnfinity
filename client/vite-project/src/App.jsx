@@ -8,7 +8,7 @@ import HeroSection from "./pages/student/Herosection";
 import Courses from "./pages/student/Courses";
 import MyLearning from "./pages/student/MyLearning";
 import Profile from "./pages/student/Profile";
-import { AuthenticatedUser,ProtectedRoute } from "./components/ui/ProtectedRoutes";
+import { AdminRoute, AuthenticatedUser,ProtectedRoute } from "./components/ui/ProtectedRoutes";
 //import { Sidebar } from "lucide-react";
 import Sidebar from "./pages/admin/lecture/Sidebar";
 import Dashboard from "./pages/admin/lecture/Dashboard";
@@ -91,7 +91,7 @@ const appRouter = createBrowserRouter([
       
       {
         path:"admin",
-        element: <Sidebar/>,
+        element: <AdminRoute><Sidebar/></AdminRoute>,
         children:[
           {
             path:"dashboard",

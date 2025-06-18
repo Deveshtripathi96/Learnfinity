@@ -8,7 +8,7 @@ router.route("/").post(isAuthenticated,createCourse);
 router.route("/").get(isAuthenticated,getAdminCourses);
 router.route("/search").get(isAuthenticated, searchCourse);
 
-router.route("/published-courses").get(isAuthenticated,getPublishedCourse);
+router.route("/published-courses").get(getPublishedCourse);
 
 
 router.route("/:courseId").put(isAuthenticated,upload.single("courseThumbnail"),editCourse);
