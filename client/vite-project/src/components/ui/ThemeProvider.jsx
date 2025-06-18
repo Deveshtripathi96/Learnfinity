@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 
 const initialState = {
@@ -14,33 +13,40 @@ export function ThemeProvider({
   storageKey = "vite-ui-theme",
   ...props
 }) {
-  const [theme, setTheme] = useState(
+  const [theme, setThemeState] = useState(
     () => localStorage.getItem(storageKey) || defaultTheme
   );
 
   useEffect(() => {
     const root = window.document.documentElement;
 
-    root.classList.remove("light", "dark");
+    const applyTheme = (newTheme) => {
+      root.classList.remove("light", "dark");
+      root.classList.add(newTheme);
+    };
 
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const systemTheme = mediaQuery.matches ? "dark" : "light";
+      applyTheme(systemTheme);
 
-      root.classList.add(systemTheme);
-      return;
+      const handleChange = () => {
+        applyTheme(mediaQuery.matches ? "dark" : "light");
+      };
+
+      mediaQuery.addEventListener("change", handleChange);
+
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    } else {
+      applyTheme(theme);
     }
-
-    root.classList.add(theme);
   }, [theme]);
 
   const value = {
     theme,
-    setTheme: (theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+    setTheme: (newTheme) => {
+      localStorage.setItem(storageKey, newTheme);
+      setThemeState(newTheme);
     },
   };
 

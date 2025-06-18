@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ModeToggle } from '@/Darkmode'
+
 import {
   Sheet,
   SheetClose,
@@ -28,6 +28,7 @@ import { toast } from 'sonner'
 import { useSelector } from 'react-redux'
 import { useDispatch } from "react-redux";
 import { userLoggedOut } from "@/features/authSlice"; // ✅ import this
+import DarkMode from '@/Darkmode'
 
 const Navbar = () => {
   const {user}=useSelector(store=>store.auth)
@@ -109,7 +110,7 @@ useEffect(() => {
               </Button>
             </div>
           )}
-          <ModeToggle />
+          <DarkMode />
         </div>
       </div>
 
@@ -144,7 +145,7 @@ const MobileNavbar = () => {
       <SheetContent className="flex flex-col dark:bg-[#0c0c0c]">
         <SheetHeader className="flex flex-row items-center justify-between mt-2">
           <SheetTitle className="text-lg font-bold text-white">E-learning</SheetTitle>
-          <ModeToggle />
+          <DarkMode />
         </SheetHeader>
         <Separator className="my-4" />
         <nav className="flex flex-col space-y-4 text-base font-medium text-white">
@@ -164,4 +165,5 @@ const MobileNavbar = () => {
       </SheetContent>
     </Sheet>
   )
+  
 }

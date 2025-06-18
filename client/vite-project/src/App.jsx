@@ -21,6 +21,7 @@ import CourseDetail from "./pages/student/CourseDetail";
 import PurchaseCourseProtectedRoute from "./components/ui/purchaseCourseProtectedRoute";
 import CourseProgress from "./pages/student/CourseProgress";
 import SearchPage from "./pages/student/SearchPage";
+import { ThemeProvider } from "./components/ui/ThemeProvider";
 
 const appRouter = createBrowserRouter([
   {
@@ -126,7 +127,10 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <main>
-    <RouterProvider router={appRouter}/>
+      <ThemeProvider>
+     <RouterProvider router={appRouter}/>
+      </ThemeProvider>
+    
 
     
     </main>
