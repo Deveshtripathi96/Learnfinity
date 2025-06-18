@@ -45,66 +45,72 @@ const Navbar = () => {
   }, [isSuccess, data, dispatch, navigate]);
 
   return (
-    <header className="h-16 fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-gradient-to-r from-white to-white dark:from-[#0c0c0c] dark:to-[#1a1a1a] border-b border-black/10 shadow-sm transition-colors duration-300">
-      {/* Desktop View */}
-      <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center px-6 h-full">
-        <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition">
-          <School2 size={26} className="text-black dark:text-white" />
-          <h1 className="font-extrabold text-2xl text-black dark:text-white tracking-wide">
-            E-learning
-          </h1>
-        </Link>
+   // <header className="h-16 fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-50 to-white dark:from-[#0c0c0c] dark:to-[#1a1a1a] border-b border-gray-200 dark:border-black/10 shadow-md transition-colors duration-300">
+    <header className="h-16 fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-100 to-white dark:from-[#111827] dark:to-[#1f2937] border-b border-gray-300 dark:border-gray-700 shadow-sm transition-all duration-300 ease-in-out">
 
-        <div className="flex items-center gap-4">
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar>
-                  <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} />
-                  <AvatarFallback>{user?.name?.slice(0, 2)?.toUpperCase() || "U"}</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-white dark:bg-gray-900 border dark:border-gray-700">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+
+  {/* Desktop View */}
+  <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center px-6 h-full">
+    <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition">
+      <School2 size={26} className="text-blue-700 dark:text-white" />
+      <h1 className="font-extrabold text-2xl text-gray-800 dark:text-white tracking-wide">
+        E-learning
+      </h1>
+    </Link>
+
+    <div className="flex items-center gap-4">
+      {user ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="cursor-pointer">
+              <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} />
+              <AvatarFallback>{user?.name?.slice(0, 2)?.toUpperCase() || "U"}</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 bg-white dark:bg-gray-900 border dark:border-gray-700 shadow-lg">
+            <DropdownMenuLabel className="text-gray-800 dark:text-white">My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <Link to="/my-learning" className="w-full block hover:text-blue-600">My Learning</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/profile" className="w-full block hover:text-blue-600">Edit Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={LogoutUserHandler} className="hover:text-red-600">
+                Log Out
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            {user.role === "instructor" && (
+              <>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <Link to="/my-learning" className="w-full block">My Learning</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link to="/profile" className="w-full block">Edit Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={LogoutUserHandler}>Log Out</DropdownMenuItem>
-                </DropdownMenuGroup>
-                {user.role === "instructor" && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Link to="/admin/dashboard" className="w-full block">Dashboard</Link>
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={() => navigate("/login")}>Login</Button>
-              <Button onClick={() => navigate("/signup")}>Signup</Button>
-            </div>
-          )}
-          <DarkMode />
+                <DropdownMenuItem>
+                  <Link to="/admin/dashboard" className="w-full block hover:text-green-700">Dashboard</Link>
+                </DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <div className="flex items-center gap-2">
+          <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50" onClick={() => navigate("/login")}>Login</Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => navigate("/signup")}>Signup</Button>
         </div>
-      </div>
+      )}
+      <DarkMode />
+    </div>
+  </div>
 
-      {/* Mobile View */}
-      <div className="md:hidden flex items-center justify-between px-4 h-full">
-        <Link to="/" className="flex items-center gap-2">
-          <School2 size={24} className="text-black dark:text-white" />
-          <h1 className="font-bold text-xl text-black dark:text-white">E-learning</h1>
-        </Link>
-        <MobileNavbar user={user} onLogout={LogoutUserHandler} />
-      </div>
-    </header>
+  {/* Mobile View */}
+  <div className="md:hidden flex items-center justify-between px-4 h-full">
+    <Link to="/" className="flex items-center gap-2">
+      <School2 size={24} className="text-blue-700 dark:text-white" />
+      <h1 className="font-bold text-xl text-gray-800 dark:text-white">E-learning</h1>
+    </Link>
+    <MobileNavbar user={user} onLogout={LogoutUserHandler} />
+  </div>
+</header>
+
   );
 };
 
@@ -119,27 +125,27 @@ const MobileNavbar = ({ user, onLogout }) => {
         <Button
           size="icon"
           variant="outline"
-          className="rounded-full bg-cyan-500 text-black dark:text-white hover:bg-white/30 backdrop-blur"
+          className="rounded-full bg-blue-100 text-blue-700 dark:bg-white/10 dark:text-white hover:bg-blue-200 dark:hover:bg-white/20 backdrop-blur"
         >
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col dark:bg-[#0c0c0c] bg-blend-soft-light text-black dark:text-white">
+      <SheetContent className="flex flex-col dark:bg-[#0c0c0c] bg-white text-gray-800 dark:text-white">
         <SheetHeader className="flex flex-row items-center justify-between mt-2">
-          <SheetTitle className="text-lg font-bold  dark:text-white text-gray-900">E-learning</SheetTitle>
+          <SheetTitle className="text-lg font-bold">E-learning</SheetTitle>
           <DarkMode />
         </SheetHeader>
         <Separator className="my-4" />
         <nav className="flex flex-col gap-4 mx-5">
           {user ? (
             <>
-              <Link to="/my-learning" className="hover:underline">My Learning</Link>
-              <Link to="/profile" className="hover:underline">Edit Profile</Link>
-              <span onClick={onLogout} className="cursor-pointer hover:underline">Log Out</span>
+              <Link to="/my-learning" className="hover:text-blue-600">My Learning</Link>
+              <Link to="/profile" className="hover:text-blue-600">Edit Profile</Link>
+              <span onClick={onLogout} className="cursor-pointer hover:text-red-600">Log Out</span>
               {user.role === "instructor" && (
                 <Link
                   to="/admin/dashboard"
-                  className="hover:underline text-center mt-6 bg-white text-green-800 py-2 rounded-md hover:bg-gray-100 transition"
+                  className="text-center mt-6 bg-green-100 text-green-700 py-2 rounded-md hover:bg-green-200 transition"
                 >
                   Dashboard
                 </Link>
@@ -147,8 +153,8 @@ const MobileNavbar = ({ user, onLogout }) => {
             </>
           ) : (
             <>
-              <Button variant="outline" onClick={() => navigate("/login")}>Login</Button>
-              <Button onClick={() => navigate("/login")}>Signup</Button>
+              <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50" onClick={() => navigate("/login")}>Login</Button>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={() => navigate("/signup")}>Signup</Button>
             </>
           )}
         </nav>

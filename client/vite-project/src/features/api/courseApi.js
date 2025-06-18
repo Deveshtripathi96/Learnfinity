@@ -19,25 +19,25 @@ export const courseApi = createApi({
       invalidatesTags: ["Refetch_creator_course"],
     }),
 
-       getSearchCourse:builder.query({
-      query: ({searchQuery, categories, sortByPrice}) => {
+    getSearchCourse: builder.query({
+      query: ({ searchQuery, categories, sortByPrice }) => {
         // Build query string
         let queryString = `/search?query=${encodeURIComponent(searchQuery)}`
         console.log("Search Query URL:", queryString);
         // append cateogry 
-        if(categories && categories.length > 0) {
+        if (categories && categories.length > 0) {
           const categoriesString = categories.map(encodeURIComponent).join(",");
-          queryString += `&categories=${categoriesString}`; 
+          queryString += `&categories=${categoriesString}`;
         }
 
         // Append sortByPrice is available
-        if(sortByPrice){
-          queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`; 
+        if (sortByPrice) {
+          queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`;
         }
 
         return {
-          url:queryString,
-          method:"GET", 
+          url: queryString,
+          method: "GET",
         }
       }
     }),
@@ -56,7 +56,7 @@ export const courseApi = createApi({
       }),
       providesTags: ["Refetch_creator_course"],
     }),
-       getPublishedCourse: builder.query({
+    getPublishedCourse: builder.query({
       query: () => ({
         url: "/published-courses",
         method: "GET",
@@ -115,7 +115,16 @@ export const courseApi = createApi({
         url: `/${courseId}?publish=${query}`,
         method: "PATCH",
       }),
-    })
+    }),
+
+    //delete course
+         deleteCourse: builder.mutation({
+  query: (courseId) => ({
+    url: `/${courseId}`, // NOT `/course/${courseId}`
+    method: "DELETE",
+    credentials: "include",
+  }),
+}),
   }),
 });
 
@@ -132,5 +141,6 @@ export const {
   usePublishCourseMutation,
   useGetPublishedCourseQuery,
   useGetSearchCourseQuery,
+  useDeleteCourseMutation
 
 } = courseApi;
