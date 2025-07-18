@@ -1,10 +1,7 @@
-# Learnfinity
+
 # 🎓 Learnfinity – Online Learning Management System
 
-<<<<<<< HEAD
-A modern, full-featured Learning Management System (LMS) built with the **MERN Stack** (MongoDB, Express.js, React.js, Node.js), **Stripe** for payments, **RTK Query** for API management, and beautiful UI using **TailwindCSS + Shadcn UI**. The system supports students and instructors with functionalities like course creation, video lectures, purchasing, progress tracking, and more.
-=======
-Learnfinity is a full-featured, modern Learning Management System (LMS) that empowers students and instructors through seamless video learning, course management, and payment handling. Built with the robust **MERN Stack**, enhanced UI components, and secure integrations.
+Learnfinity is a full-featured, modern **Learning Management System (LMS)** built with the **MERN Stack** (MongoDB, Express.js, React.js, Node.js). It empowers students and instructors through seamless course creation, video-based learning, secure Stripe payments, and elegant UI powered by **TailwindCSS + Shadcn UI**. API communication is managed with **Redux Toolkit Query (RTK Query)**.
 
 ![Learnfinity Banner](https://res.cloudinary.com/diziygks9/image/upload/v1752508923/Screenshot_2025-07-14_210030_t8ya9g.png) <!-- Optional banner -->
 
