@@ -1,7 +1,7 @@
 import JoditEditor from 'jodit-react';
 import { useRef, useState } from 'react';
 
-const RichtextEditor = ({input , setInput}) => {
+const RichTextEditor = ({input , setInput}) => {
   const editor = useRef(null);
 
   const handleChange = (content) =>{
@@ -16,4 +16,4 @@ const RichtextEditor = ({input , setInput}) => {
 );
 }
 
-export default RichtextEditor
+export default RichTextEditor
