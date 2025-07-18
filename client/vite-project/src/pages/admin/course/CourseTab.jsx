@@ -230,8 +230,8 @@
 
 
 //new updated code
-import RichTextEditor from "@/components/ui/RichTextEditor";
-import { Button } from "@/components/ui/button";
+import RichTextEditor from "@/components/ui/RichTextEditor.jsx";
+import { Button } from "@/components/ui/button.jsx";
 import {
   Card,
   CardContent,
