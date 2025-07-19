@@ -3,8 +3,14 @@ import { userLoggedIn } from "../authSlice";
 import { Form } from "react-router-dom";
 import { toast } from "sonner";
 
+import { USER_API } from "./apibase";
 
-const USER_API="http://localhost:8080/api/v1/user/"
+
+// const USER_API =
+//   import.meta.env.VITE_API_BASE_URL
+//   ? import.meta.env.VITE_API_BASE_URL + "/api/v1/user/"
+//   : "http://localhost:8080/api/v1/user/";
+
 
 export const authApi=createApi({
     reducerPath:"authApi",

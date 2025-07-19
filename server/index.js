@@ -16,11 +16,14 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-    //methods: ["GET", "POST", "PUT", "DELETE",],
-    allowedHeaders: ["Content-Type", "Authorization"]
-  }));
+  origin: [
+    "http://localhost:5173",
+    "https://learnfinity-d9vn.vercel.app"
+  ],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 
 // apis
 app.use("/api/v1/user",UserRoute);
