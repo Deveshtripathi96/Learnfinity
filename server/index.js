@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: [
     "http://localhost:5173",
-     "learnfinity-u43e-gx5q6tfnc-devesh-tripathis-projects.vercel.app"
+     "https://learnfinity-tau.vercel.app" 
   ],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"]
