@@ -7,8 +7,10 @@ export const generateToken = (res, user, message) => {
 
     return res.status(201).cookie("token", token, 
         { httpOnly: true,
-             sameSite: 'strict',
-             secure: process.env.NODE_ENV === "production" ? true : false,
+            //  sameSite: 'strict',
+            //  secure: process.env.NODE_ENV === "production" ? true : false,
+              sameSite: 'none',  // <-- this is required for cross-site cookies
+               secure: true,      // <-- must be true when sameSite is 'none'
              maxAge: 24 * 60 * 60 * 1000 })
         .json({
         success: true,
