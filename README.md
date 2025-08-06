@@ -16,14 +16,14 @@ Learnfinity is a full-featured, modern **Learning Management System (LMS)** buil
 - **Authentication:** Cookie-based Sessions
 - **Media Storage:** Cloudinary
 - **Payments:** Stripe (with Webhooks)
->>>>>>> b90bcbd15867448cc3e3d66f55091683107bb9b9
+
 
 ---
 
 ## 🚀 Features
 
 ### 🔐 Authentication
-<<<<<<< HEAD
+
 - Signup/Login with role: Student or Instructor
 - Session management using cookies
 - Role-based access protection (Instructor Dashboard, Course Purchase)
@@ -60,7 +60,7 @@ Learnfinity is a full-featured, modern **Learning Management System (LMS)** buil
 
 
 
-=======
+
 - Signup/Login with roles: **Student** or **Instructor**
 - Cookie-based session management
 - Role-based route protection (e.g., Instructor-only dashboard)
@@ -161,4 +161,3 @@ cd ../server && npm install
 
 # Run the app
 npm run dev   # Starts both frontend and backend
->>>>>>> b90bcbd15867448cc3e3d66f55091683107bb9b9
