@@ -19,6 +19,11 @@ Learnfinity is a full-featured, modern **Learning Management System (LMS)** buil
 
 
 ---
+## 🌐 Live Demo
+
+- 🔗 Frontend: [learnfinity-tau.vercel.app](https://learnfinity-tau.vercel.app)
+
+---
 
 ## 🚀 Features
 
